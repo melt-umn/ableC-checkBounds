@@ -22,7 +22,7 @@ top::Qualifier ::=
     | _ -> false
     end;
   top.qualIsHost = false;
-  top.qualifyErrors =
+  top.errors :=
     case top.typeToQualify of
       pointerType(_, _) -> []
     | _                 -> [err(top.location, "`check_bounds' cannot qualify a non-pointer")]
@@ -66,10 +66,10 @@ top::Expr ::= lhs::Expr rhs::Expr
         location=bogusLoc()
       );
 
-  rhsRuntimeChecks <-
+  runtimeMods <-
     if containsQualifier(checkBoundsQualifier(location=bogusLoc()), lhs.typerep)
-    then [pair(checkBounds, "ERROR:" ++ rhs.location.unparse ++
-          ": array subscript out of range\\n")]
+    then [rhsRuntimeMod(runtimeCheck(checkBounds, "ERROR:" ++ rhs.location.unparse ++
+          ": array subscript out of range\\n", top.location))]
     else [];
 }
 
