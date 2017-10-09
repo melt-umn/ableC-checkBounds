@@ -9,7 +9,7 @@ imports edu:umn:cs:melt:exts:ableC:checkBounds:abstractsyntax;
 
 marking terminal CheckBounds_t 'check_bounds' lexer classes {Ckeyword};
 
-concrete production CheckBoundsTypeQualifier_c
+concrete production checkBoundsTypeQualifier_c
 top::TypeQualifier_c ::= 'check_bounds'
 {
   top.typeQualifiers = abs:foldQualifier([checkBoundsQualifier(location=top.location)]);
