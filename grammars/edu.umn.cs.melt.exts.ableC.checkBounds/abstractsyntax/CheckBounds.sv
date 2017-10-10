@@ -61,13 +61,13 @@ top::Expr ::= lhs::Expr rhs::Expr
     \tmpRhs :: Expr ->
       binaryOpExpr(
         upperBound,
-        compareOp(lteOp(location=bogusLoc()), location=bogusLoc()),
+        compareOp(lteOp(location=builtinLoc(MODULE_NAME)), location=builtinLoc(MODULE_NAME)),
         tmpRhs,
-        location=bogusLoc()
+        location=builtinLoc(MODULE_NAME)
       );
 
   runtimeMods <-
-    if containsQualifier(checkBoundsQualifier(location=bogusLoc()), lhs.typerep)
+    if containsQualifier(checkBoundsQualifier(location=builtinLoc(MODULE_NAME)), lhs.typerep)
     then [rhsRuntimeMod(runtimeCheck(checkBounds, "ERROR:" ++ rhs.location.unparse ++
           ": array subscript out of range\\n", top.location))]
     else [];
