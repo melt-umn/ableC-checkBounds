@@ -3,6 +3,7 @@ grammar edu:umn:cs:melt:exts:ableC:checkBounds:abstractsyntax;
 imports edu:umn:cs:melt:ableC:abstractsyntax;
 imports edu:umn:cs:melt:ableC:abstractsyntax:construction;
 imports edu:umn:cs:melt:ableC:abstractsyntax:env;
+imports edu:umn:cs:melt:ableC:abstractsyntax:injectable as inj;
 imports silver:langutil;
 imports silver:langutil:pp;
 
@@ -29,7 +30,7 @@ top::Qualifier ::=
     end;
 }
 
-aspect production arraySubscriptExpr
+aspect production inj:arraySubscriptExpr
 top::Expr ::= lhs::Expr rhs::Expr
 {
   local lhsDerefTypeName :: TypeName =
@@ -68,7 +69,7 @@ top::Expr ::= lhs::Expr rhs::Expr
 
   runtimeMods <-
     if containsQualifier(checkBoundsQualifier(location=builtinLoc(MODULE_NAME)), lhs.typerep)
-    then [rhsRuntimeMod(runtimeCheck(checkBounds, "ERROR:" ++ rhs.location.unparse ++
+    then [inj:rhsRuntimeMod(inj:runtimeCheck(checkBounds, "ERROR:" ++ rhs.location.unparse ++
           ": array subscript out of range\\n", top.location))]
     else [];
 }
