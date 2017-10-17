@@ -78,8 +78,8 @@ static size_t _boundsmap_find(const struct _bounds_map *self, const void * check
     struct _bounds_list *l = self->l;
     while (l != NULL) {
         if (l->x->fst == key) {
-	    return l->x->snd;
-	}
+          return l->x->snd;
+        }
         l = l->xs;
     }
     return 0;

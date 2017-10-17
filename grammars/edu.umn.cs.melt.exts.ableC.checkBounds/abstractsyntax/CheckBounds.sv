@@ -1,6 +1,6 @@
 grammar edu:umn:cs:melt:exts:ableC:checkBounds:abstractsyntax;
 
-imports edu:umn:cs:melt:ableC:abstractsyntax;
+imports edu:umn:cs:melt:ableC:abstractsyntax:host;
 imports edu:umn:cs:melt:ableC:abstractsyntax:construction;
 imports edu:umn:cs:melt:ableC:abstractsyntax:env;
 imports edu:umn:cs:melt:ableC:abstractsyntax:injectable as inj;
@@ -40,7 +40,7 @@ top::Expr ::= lhs::Expr rhs::Expr
     end;
 
   local upperBound :: Expr =
-    binaryOpExpr(
+    divExpr(
       directCallExpr(
         name("_boundsmap_find", location=builtinLoc(MODULE_NAME)),
         foldExpr([
@@ -49,7 +49,6 @@ top::Expr ::= lhs::Expr rhs::Expr
         ]),
         location=builtinLoc(MODULE_NAME)
       ),
-      numOp(divOp(location=builtinLoc(MODULE_NAME)), location=builtinLoc(MODULE_NAME)),
       unaryExprOrTypeTraitExpr(
         sizeofOp(location=builtinLoc(MODULE_NAME)),
         typeNameExpr(lhsDerefTypeName),
@@ -59,13 +58,7 @@ top::Expr ::= lhs::Expr rhs::Expr
     );
 
   local checkBounds :: (Expr ::= Expr) =
-    \tmpRhs :: Expr ->
-      binaryOpExpr(
-        upperBound,
-        compareOp(lteOp(location=builtinLoc(MODULE_NAME)), location=builtinLoc(MODULE_NAME)),
-        tmpRhs,
-        location=builtinLoc(MODULE_NAME)
-      );
+    \tmpRhs :: Expr -> lteExpr(upperBound, tmpRhs, location=builtinLoc(MODULE_NAME));
 
   runtimeMods <-
     if containsQualifier(checkBoundsQualifier(location=builtinLoc(MODULE_NAME)), lhs.typerep)
