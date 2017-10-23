@@ -49,8 +49,7 @@ top::Expr ::= lhs::Expr rhs::Expr
         ]),
         location=builtinLoc(MODULE_NAME)
       ),
-      unaryExprOrTypeTraitExpr(
-        sizeofOp(location=builtinLoc(MODULE_NAME)),
+      sizeofExpr(
         typeNameExpr(lhsDerefTypeName),
         location=builtinLoc(MODULE_NAME)
       ),
