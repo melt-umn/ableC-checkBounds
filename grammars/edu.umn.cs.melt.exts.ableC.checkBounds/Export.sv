@@ -7,5 +7,4 @@ grammar edu:umn:cs:melt:exts:ableC:checkBounds;
  - abstract syntax and concrete syntax of an extension by importing this grammar.
  -}
 exports edu:umn:cs:melt:exts:ableC:checkBounds:abstractsyntax;
-exports edu:umn:cs:melt:exts:ableC:checkBounds:concretesyntax;
 

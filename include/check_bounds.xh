@@ -1,27 +1,10 @@
 #ifndef __CHECK_BOUNDS_XH
 #define __CHECK_BOUNDS_XH
 
-/* This implementation of a hash table is based on
-    Cormen et al. "Introduction to Algorithms" Third Edition,
-    Chapter 11: Hash Tables */
-
 # include <stdbool.h>
 # include <stdint.h>
 
 extern struct _bounds_map *_BOUNDS_MAP;
-
-/** The maximum acceptable number of average elements per slot. */
-static const unsigned int _MAX_LOAD = 2;
-/** Log_2 of the number of slots, for _MAX_LOAD 2 this supports 16 elements. */
-static const unsigned int _INIT_NUM_SLOTS_LG = 3;
-/** Increase num_slots by this many times on every resize. */
-static const unsigned int _RESIZE_LG = 2;
-
-/** use Donald Knuth's recommendation for the constant to use with the
-    multiplication hash method:
-    ((sqrt(5) + 1) / 2) * 2^{word_size}
-*/
-static const size_t _MULT_CONST = 0.6180339887498949 * (SIZE_MAX + 1.);
 
 struct _ptr_bound_pair {
     const void *fst;
@@ -73,7 +56,7 @@ static void _boundsmap_insert(struct _bounds_map *self, const void *key, size_t 
     self->l = _boundslist_cons(_ptrboundpair_new(key, value), self->l);
 }
 
-static size_t _boundsmap_find(const struct _bounds_map *self, const void * check_bounds key)
+static size_t _boundsmap_find(const struct _bounds_map *self, const void * check key)
 {
     struct _bounds_list *l = self->l;
     while (l != NULL) {

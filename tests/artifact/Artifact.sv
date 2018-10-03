@@ -13,6 +13,7 @@ import edu:umn:cs:melt:ableC:drivers:compile;
 
 parser extendedParser :: cst:Root {
   edu:umn:cs:melt:ableC:concretesyntax;
+  edu:umn:cs:melt:exts:ableC:check;
   edu:umn:cs:melt:exts:ableC:checkBounds;
 } 
 
