@@ -16,7 +16,7 @@ void *mymalloc(size_t size)
 
 int main(int argc, char *argv[])
 {
-    int * check_bounds x = mymalloc(5 * sizeof(int));
+    int * check x = mymalloc(5 * sizeof(int));
     x[0] = 0;
     x[7] = 1;
 
