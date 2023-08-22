@@ -8,8 +8,6 @@ imports edu:umn:cs:melt:ableC:abstractsyntax:injectable as inj;
 imports silver:langutil;
 imports silver:langutil:pp;
 
-global MODULE_NAME :: String = "edu:umn:cs:melt:exts:ableC:checkBounds";
-
 aspect production inj:arraySubscriptExpr
 top::Expr ::= lhs::Expr rhs::Expr
 {
@@ -22,27 +20,24 @@ top::Expr ::= lhs::Expr rhs::Expr
   local upperBound :: Expr =
     divExpr(
       directCallExpr(
-        name("_boundsmap_find", location=builtinLoc(MODULE_NAME)),
+        name("_boundsmap_find"),
         foldExpr([
-          txtExpr("_BOUNDS_MAP", location=builtinLoc(MODULE_NAME)),
+          txtExpr("_BOUNDS_MAP"),
           lhs -- TODO: should create tmpLhs
-        ]),
-        location=builtinLoc(MODULE_NAME)
+        ])
       ),
       sizeofExpr(
-        typeNameExpr(lhsDerefTypeName),
-        location=builtinLoc(MODULE_NAME)
-      ),
-      location=builtinLoc(MODULE_NAME)
+        typeNameExpr(lhsDerefTypeName)
+      )
     );
 
   local checkBounds :: (Expr ::= Expr) =
-    \tmpRhs :: Expr -> lteExpr(upperBound, tmpRhs, location=builtinLoc(MODULE_NAME));
+    \tmpRhs :: Expr -> lteExpr(upperBound, tmpRhs);
 
   runtimeMods <-
-    if containsQualifier(checkQualifier(location=builtinLoc(MODULE_NAME)), lhs.typerep)
-    then [inj:rhsRuntimeMod(inj:runtimeCheck(checkBounds, "ERROR:" ++ rhs.location.unparse ++
-          ": array subscript out of range\\n", top.location))]
+    if containsQualifier(checkQualifier(), lhs.typerep)
+    then [inj:rhsRuntimeMod(inj:runtimeCheck(checkBounds, "ERROR:" ++ getParsedOriginLocationOrFallback(rhs).unparse ++
+          ": array subscript out of range\\n"))]
     else [];
 }
 
